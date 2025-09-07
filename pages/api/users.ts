@@ -1,3 +1,4 @@
+// pages/api/users.ts
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSupabaseAdmin } from '../../lib/supabaseClient'
 
@@ -10,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const supabaseAdmin = getSupabaseAdmin()
     const { data: userData, error: userErr } = await supabaseAdmin.auth.getUser(token)
     if (userErr || !userData?.user) return res.status(401).json({ error: 'Invalid token' })
-    const user = userData.data.user
+    const user = userData.user
 
     const payload = {
       id: user.id,
