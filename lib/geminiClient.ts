@@ -6,6 +6,5 @@ if (!apiKey) {
   throw new Error("GOOGLE_API_KEY environment variable not set.");
 }
 
-export const geminiGenerate = new GoogleGenerativeAI({
-  apiKey
-});
+// Fix: pass apiKey as string, not object
+export const geminiGenerate = new GoogleGenerativeAI(apiKey);
