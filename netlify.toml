@@ -6,3 +6,5 @@
   from = "/*"
   to = "/index.html"
   status = 200
+  [build.environment]
+  GOOGLE_API_KEY = "AIzaSyAK3y3EaGaDe8Wh8ai3JZmexx95BIALM24"
