@@ -5,30 +5,20 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "postinstall": "npm install swr"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.14.0",
-    "swr": "^2.2.0",   // add the latest stable version
     "next": "14.0.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "swr": "^2.2.0",
+    "@supabase/supabase-js": "^2.0.0",
+    "@google/generative-ai": "^1.0.0"
   },
-  "dependencies": {
-  "@supabase/supabase-js": "^2.0.0",
-  "next": "14.0.0",
-  "react": "^18.0.0",
-  "react-dom": "^18.0.0"
-},  
   "devDependencies": {
-    "typescript": "^5.2.2",
-    "@types/react": "^18.2.0",
-    "@types/node": "^20.7.1"
-  },
-  "scripts": {
-  "dev": "next dev",
-  "build": "next build",
-  "start": "next start",
-  "postinstall": "npm install @google/generative-ai"
-}
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/swr": "^2.0.0"
+  }
 }
