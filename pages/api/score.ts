@@ -1,25 +1,25 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { generateText } from "../../lib/geminiClient";
+// pages/api/score.ts
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { geminiGenerate } from '../../lib/geminiClient';
 
 interface RiskPayload {
   age: number;
 }
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const data: RiskPayload = req.body;
 
   try {
-    const result = await generateText(`Calculate risk for age ${data.age}`);
+    const result = await geminiGenerate.generateText(
+      `Calculate career risk score for a person aged ${data.age}`
+    );
     res.status(200).json({ result });
-  } catch (error) {
-    console.error("Error generating text:", error);
-    res.status(500).json({ error: "Failed to generate risk" });
+  } catch (error: any) {
+    console.error('Error generating risk score:', error);
+    res.status(500).json({ error: error.message ?? 'Internal server error' });
   }
 }
