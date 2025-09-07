@@ -1,27 +1,28 @@
-// lib/deepseekClient.ts
-import OpenAI from "openai";
+// lib/geminiClient.ts
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export interface DeepseekRequest {
-  prompt: string;
-  maxTokens?: number;
+const apiKey = process.env.GOOGLE_API_KEY; // make sure you set this in Netlify environment variables
+if (!apiKey) {
+  throw new Error("Missing GOOGLE_API_KEY in environment variables");
 }
 
-const client = new OpenAI({
-  apiKey: process.env.DEEPSEEK_API_KEY!, // make sure this is set in Netlify env vars
-  baseURL: "https://api.deepseek.com",   // adjust if Deepseek has a different endpoint
-});
+const genAI = new GoogleGenerativeAI(apiKey);
 
-export async function deepseekGenerate(req: DeepseekRequest): Promise<string> {
+// Define the request type
+export interface GeminiRequest {
+  prompt: string;
+}
+
+// Main helper function
+export async function geminiGenerate(request: GeminiRequest): Promise<string> {
   try {
-    const completion = await client.chat.completions.create({
-      model: "deepseek-chat", // or the exact model name you want
-      messages: [{ role: "user", content: req.prompt }],
-      max_tokens: req.maxTokens ?? 300,
-    });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    return completion.choices[0].message?.content ?? "";
+    const result = await model.generateContent(request.prompt);
+
+    return result.response.text();
   } catch (error) {
-    console.error("Deepseek API error:", error);
-    throw new Error("Failed to generate response from Deepseek");
+    console.error("Gemini API error:", error);
+    throw new Error("Failed to generate content with Gemini");
   }
 }
