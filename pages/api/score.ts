@@ -1,44 +1,46 @@
 // pages/api/score.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import { deepseekGenerate } from "../../lib/deepseekClient";
+import { geminiGenerate } from "../../lib/geminiClient";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+interface RiskPayload {
+  age: number;
+  industry: string;
+  jobLevel: string;
+  skills: string[];
+  location: string;
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const payload = req.body;
+    const payload: RiskPayload = req.body;
 
-    // === Calculate Risk Score (dummy example, adjust to your logic) ===
-    let total = 0;
-    if (payload.experienceYears) total += payload.experienceYears * 2;
-    if (payload.skills?.length) total += payload.skills.length * 5;
+    // === Simple risk scoring logic ===
+    let score = 0;
 
-    const riskCategory =
-      total > 80 ? "High Risk" : total > 50 ? "Medium Risk" : "Low Risk";
+    // Age risk
+    if (payload.age > 50) score += 20;
+    else if (payload.age < 25) score += 10;
 
-    // === Generate narrative with Deepseek ===
-    const narrative = await deepseekGenerate({
-      prompt: `Profile: ${JSON.stringify(payload)}. 
-      Risk score: ${total.toFixed(1)} (${riskCategory}). 
-      Provide a 200-word narrative assessment and career guidance.`,
-      maxTokens: 500,
-    });
+    // Industry risk
+    if (["manufacturing", "retail"].includes(payload.industry.toLowerCase())) {
+      score += 20;
+    } else if (payload.industry.toLowerCase() === "tech") {
+      score += 5;
+    }
 
-    return res.status(200).json({
-      score: total,
-      category: riskCategory,
-      narrative,
-    });
-  } catch (error: any) {
-    console.error("Error in /api/score:", error);
-    return res.status(500).json({
-      error: "Failed to calculate risk score",
-      details: error.message,
-    });
-  }
-}
+    // Job level risk
+    if (payload.jobLevel.toLowerCase() === "entry") score += 15;
+    else if (payload.jobLevel.toLowerCase() === "senior") score += 10;
+
+    // Skills risk
+    if (payload.skills.length < 3) score += 20;
+
+    // Location risk
+    if (payload.location.toLowerCase() === "remote") score += 5;
+    else score += 10;
+
+    const total = Math.min(100, score);
