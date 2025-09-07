@@ -23,5 +23,11 @@
     "typescript": "^5.2.2",
     "@types/react": "^18.2.0",
     "@types/node": "^20.7.1"
-  }
+  },
+  "scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "postinstall": "npm install @google/generative-ai"
+}
 }
