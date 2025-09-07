@@ -14,7 +14,8 @@
     "react-dom": "18.2.0",
     "@supabase/supabase-js": "2.23.0",
     "react-hook-form": "7.43.9",
-    "pdfkit": "0.14.0"
+    "pdfkit": "0.14.0",
+    "@google/generative-ai": "^0.17.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
