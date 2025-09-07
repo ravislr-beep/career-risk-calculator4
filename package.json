@@ -28,5 +28,8 @@
   "dev": "next dev",
   "build": "next build",
   "start": "next start"
+},
+  "scripts": {
+  "postinstall": "npm install @google/generative-ai"
 }
 }
