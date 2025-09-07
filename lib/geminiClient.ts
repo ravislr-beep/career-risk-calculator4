@@ -1,22 +1,19 @@
 // lib/geminiClient.ts
-import { GoogleGenerativeAI, GenerateContentRequest } from "@google/generative-ai";
+import { GoogleGenerativeAI, GenerateContentRequest } from '@google/generative-ai';
 
-if (!process.env.GOOGLE_API_KEY) {
-  throw new Error("GOOGLE_API_KEY environment variable is not set");
-}
+// Pass the API key directly as a string
+const geminiClient = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 
-// Initialize the client
-export const geminiClient = new GoogleGenerativeAI({
-  apiKey: process.env.GOOGLE_API_KEY,
+export const textModel = geminiClient.getGenerativeModel({
+  model: 'gemini-2.5-flash',
 });
 
-// Helper function to generate text using the AI
-export async function generateText(prompt: string) {
-  const request: GenerateContentRequest = {
-    model: "text-bison-001", // official model name
-    input: prompt,
-  };
-
-  const response = await geminiClient.generateContent(request);
-  return response.output[0].content[0].text; // extract the generated text
-}
+export const geminiGenerate = {
+  generateText: async (prompt: string) => {
+    const request: GenerateContentRequest = {
+      contents: [{ text: prompt }],
+    };
+    const response = await textModel.generateContent(request);
+    return response.text;
+  },
+};
