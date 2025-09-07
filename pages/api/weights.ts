@@ -1,3 +1,4 @@
+// pages/api/weights.ts
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSupabaseAdmin } from '../../lib/supabaseClient'
 
@@ -14,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // check admin
     const { data: userData, error: userErr } = await supabaseAdmin.auth.getUser(token)
     if (userErr || !userData?.user) return res.status(401).json({ error: 'Invalid token' })
-    const user = userData.data.user
+    const user = userData.user
     // check app_users for is_admin
     const { data: appUser } = await supabaseAdmin.from('app_users').select('*').eq('id', user.id).single()
     const adminEmails = (process.env.ADMIN_EMAILS ?? '').split(',').map(s => s.trim()).filter(Boolean)
