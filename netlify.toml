@@ -1,10 +1,11 @@
-
 [build]
   command = "npm run build"
   publish = ".next"
 
-[build.environment]
-  GOOGLE_API_KEY = "AIzaSyAK3y3EaGaDe8Wh8ai3JZmexx95BIALM24"
-
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
