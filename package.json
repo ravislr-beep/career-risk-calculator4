@@ -18,8 +18,7 @@
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    //"@types/swr": "^2.0.0"
+    "@types/react-dom": "^18.0.0"
   },
   "dependencies": {
     "swr": "^2.2.0" 
