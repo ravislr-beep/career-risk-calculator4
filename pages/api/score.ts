@@ -1,6 +1,6 @@
 // pages/api/score.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { geminiGenerate } from '../../lib/geminiClient';
+import { generateText } from '../../lib/geminiClient';
 
 interface RiskPayload {
   age: number;
@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const data: RiskPayload = req.body;
 
   try {
-    const result = await geminiGenerate.generateText(
+    const result = await generateText(
       `Calculate career risk score for a person aged ${data.age}`
     );
     res.status(200).json({ result });
